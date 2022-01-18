@@ -28,14 +28,17 @@ def prodImg(scale=16, file="swag.png", seed=123, octaves=3, bias=0.8, smooth = 2
 
 	testPerl.makeOctaveList(scale, scale, seed, smooth, octaves, bias, xchunk, ychunk) # Add x-offset and y-offset
 
-	swag = testPerl.list
+	values = testPerl.list
 
-	temp = [x - min(swag) for x in swag]
-	swag = [x / max(temp) * 100 for x in temp]
+	minVal = min(values)
+	tempList = [x minVal for x in values]
+
+	maxVal = max(tempList)
+	values = [x / maxVal * 100 for x in tempList]
 
 	for x in range (scale):
 		for y in range(scale):
-			draw.rectangle([x,y,x+1,y+1], fill = (0,0, int(swag[y * scale + x])))
+			draw.rectangle([x,y,x+1,y+1], fill = (0,0, int(values[y * scale + x])))
 
 	rgbImg = img.convert(mode="RGB")
 	rgbImg.save(file)

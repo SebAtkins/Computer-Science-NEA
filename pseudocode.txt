@@ -1,0 +1,85 @@
+function generateVertices(xscale, yscale, seed, bias, octaves, smooth):
+    perlin.generateNoise(seed, xscale, yscale, bias, octaves, smooth)
+
+    for y in yscale:
+        for x in xscale:
+            vertices.append([x, perlin.valueAt(x, y), y])
+        endfor
+    endfor
+    
+    return vertices
+
+function generateFaces(vertices, xscale, yscale):
+    faces = []
+
+    for i in vertices:
+        if i[x] != xscale and i[y] != 0:
+            above = vertexAbove(i, xscale, yscale)
+            aboveRight = vertexRight(above, xscale, yscale)
+            right = vertexRight(i, xscale, yscale)
+
+            faces.append([i, above, aboveRight])
+            faces.append([i, right, aboveRight])
+        endif
+    endfor
+
+    return faces
+
+function vertexAbove(vertex, xscale, yscale):
+    global vertices
+
+    position = vertices.index(vertex)
+
+    return vertices[position - xscale]
+
+function vertexRight(vertex, xscale, yscale):
+    global vertices
+
+    position = vertices.index(vertex)
+
+    return vertices[position + 1]
+
+function produceVertexNormal(faceNormals):
+    vertexNormal = [0, 0, 0]
+
+    for x in faceNormals:
+        vertexNormal[0] = vertexNormal[0] + x[0]
+        vertexNormal[1] = vertexNormal[1] + x[1]
+        vertexNormal[2] = vertexNormal[2] + x[2]
+    endfor
+
+    normalMagnitude = sqrt(vertexNormal[0] ** 2 + vertexNormal[1] ** 2 + vertexNormal[2] ** 2)
+    
+    for x in vertexNormal:
+        x = x / normalMagnitude
+    endfor
+
+    if vertexNormal[1] < 0:
+        vertexNormal[0] = -vertexNormal[0]
+        vertexNormal[1] = -vertexNormal[1]
+        vertexNormal[2] = -vertexNormal[2]
+    endif
+    
+    return vertexNormal
+
+
+function produceFaceNormal(vertex1, vertex2, vertex3):
+    edge1 = [vertex2[0] - vertex1[0],
+             vertex2[1] - vertex1[1],
+             vertex2[2] - vertex1[2]]
+    
+    edge2 = [vertex3[0] - vertex1[0],
+             vertex3[1] - vertex1[1],
+             vertex3[2] - vertex1[2]]
+    
+    normal = [edge1[1] * edge2[2] - edge1[2] * edge2[1],
+              edge1[2] * edge2[0] - edge1[0] * edge2[2],
+              edge1[0] * edge2[1] - edge1[1] * edge2[0]]
+    
+    normalMagnitude = sqrt(normal[0] ** 2 + normal[1] ** 2 + normal[2] ** 2)
+
+    for x in normal:
+        x = x / normalMagnitude
+    endfor
+
+    return normal
