@@ -1,3 +1,18 @@
+procedure createHeightmap(xScale, yScale, seed, bias, octaves, smooth, FilePath):
+    perlin.generateNoise(seed, xScale, yScale, bias, octaves, smooth)
+
+    image = pillow.NewHSVImage()
+
+    for x in xScale:
+        for y in yScale:
+            pillow.DrawRect(image, x, y, 1, [0, 0, perlin.valueAt(x, y)])
+        endfor
+    endfor
+
+    image = pillow.HSVtoRGB(image)
+    pillow.Save(image, FilePath)
+
+
 function generateVertices(xscale, yscale, seed, bias, octaves, smooth):
     perlin.generateNoise(seed, xscale, yscale, bias, octaves, smooth)
 
