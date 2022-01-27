@@ -28,7 +28,7 @@ swag = [x / max(temp) * 255 for x in temp]
 
 for x in range (scale):
 	for y in range(scale):
-		draw.rectangle([x,y,x+1,y+1], fill = ((1 - int(swag[y * scale + x])),0, int(swag[y * scale + x])))
+		draw.rectangle([x,y,x+1,y+1], fill = (0, 0, int(swag[y * scale + x])))
 
 img.show()
 img.save("C:/Users/sebat/Desktop/CS NEA/swag.png")
