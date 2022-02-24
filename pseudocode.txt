@@ -45,7 +45,7 @@ function vertexAbove(vertex, xscale, yscale):
 
     position = vertices.index(vertex)
 
-    return vertices[position - xscale]
+    return vertices[position - xscale] => return vertices[position + xscale]
 
 function vertexRight(vertex, xscale, yscale):
     global vertices
