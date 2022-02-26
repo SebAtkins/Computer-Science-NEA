@@ -1,5 +1,7 @@
 from random import randint
 
+import normals
+
 def generateVertices(xScale, yScale):
     vertices = [] 
 
