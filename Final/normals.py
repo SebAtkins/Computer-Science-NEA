@@ -10,8 +10,11 @@ def produceVertexNormal(faceNormals):
 
     normalMagnitude = sqrt(vertexNormal[0] ** 2 + vertexNormal[1] ** 2 + vertexNormal[2] ** 2)
     
-    for x in vertexNormal:
-        x = x / normalMagnitude
+    if normalMagnitude != 0:
+        for x in vertexNormal:
+            x = x / normalMagnitude
+    else:
+        vertexNormal = [0, 1, 0]
 
     if vertexNormal[1] < 0:
         vertexNormal[0] = -vertexNormal[0]
@@ -40,3 +43,17 @@ def produceFaceNormal(vertex1, vertex2, vertex3):
         x = x / normalMagnitude
 
     return normal
+
+def generateNormals(vertices, faces, faceNormals):
+    vertexNormals = []
+
+    for x in vertices:
+        normalsToUse = []
+
+        for y in faces:
+            if x in y:
+                normalsToUse.append(faceNormals[faces.index(y)])
+        
+        vertexNormals.append(produceVertexNormal(normalsToUse))
+    
+    return vertexNormals
