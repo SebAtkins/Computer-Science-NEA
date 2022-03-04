@@ -1,49 +1,6 @@
-from random import randint
-
-import normals
-
-def generateVertices(xScale, yScale):
-    vertices = [] 
-
-    for y in range(yScale):
-        for x in range(xScale):
-            #Replace 1 with noiseValue to enable noise
-            #vertices.append([x, 1, y])
-            vertices.append([x, randint(1,3), y])
-    
-    return vertices
-
-def vertexAbove(vertices, vertex, xScale):
-    position = vertices.index(vertex)
-
-    return vertices[position + 1]
-
-def vertexRight(vertices, vertex, xScale):
-    position = vertices.index(vertex)
-
-    return vertices[position + xScale]
-
-def generateFaces(vertices, xScale, yScale, genNormals):
-    faces = []
-    faceNormals = []
-
-    for i in vertices:
-        if i[0] != (xScale - 1) and i[2] != (yScale - 1):
-            #Find vertices in face
-            above = vertexAbove(vertices, i, xScale)
-            aboveRight = vertexRight(vertices, above, xScale)
-            right = vertexRight(vertices, i, xScale)
-
-            #Add face
-            faces.append([i, above, aboveRight])
-            faces.append([i, aboveRight, right])
-
-            #Add normals
-            if genNormals == True:
-                faceNormals.append(normals.produceFaceNormal(i, above, aboveRight))
-                faceNormals.append(normals.produceFaceNormal(i, right, aboveRight))
-    
-    return faces, faceNormals
+from normals import generateNormals
+from vertices import generateVertices
+from faces import generateFaces
 
 def createFile(fileName, vertices, faces, genNormals, vertexNormals = []):
     file = open(fileName, "w")
@@ -71,13 +28,11 @@ def createFile(fileName, vertices, faces, genNormals, vertexNormals = []):
     
     file.close()
 
-def runGen(xScale, yScale, fileName, genNormals):
+def runGen(xScale, yScale, fileName, imgName, genNormals):
     vertexNormals = []
 
-    vertices = generateVertices(xScale, yScale)
+    vertices = generateVertices(xScale, yScale, imgName)
     faces, faceNormals = generateFaces(vertices, xScale, yScale, genNormals)
     if genNormals == True:
-        vertexNormals = normals.generateNormals(vertices, faces, faceNormals)
+        vertexNormals = generateNormals(vertices, faces, faceNormals)
     createFile(fileName, vertices, faces, genNormals, vertexNormals)
-
-runGen(16, 16, "Final/testGen.obj", True)

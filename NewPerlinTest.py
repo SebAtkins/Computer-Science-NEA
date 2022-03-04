@@ -1,6 +1,3 @@
-from perlinWIP import perlin
-
-
 class noiseFactory:
     # This is a translation of Ken Perlin's original Perlin Noise algorithm into Python,
     # which has been made into a class for ease of use.

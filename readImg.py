@@ -6,21 +6,21 @@ from PIL import ImageDraw
 
 import NewPerlinTest as perl 
 
-def showImg(file="swag.png"):
+def showImg(file):
 	img = Image.open(file)
 	img.show()
 
-def getVal(x, y, file="swag.png"):
-	swag = Image.open(file)
+def getVal(x, y, file):
+	image = Image.open(file)
 
 	#Get the RGB value of the pixel
-	r, g, b = swag.getpixel((x, y))
+	r, g, b = image.getpixel((x, y))
 	#Translate the RGB to HSV in order to get opacity
 	h, s, v = colorsys.rgb_to_hsv(r, g, b)
 
 	return v / 10
 
-def prodImg(scale=16, file="swag.png", seed=123, octaves=3, bias=0.8, smooth = 25, xchunk = 0, ychunk = 0):
+def prodImg(scale, file, seed, octaves, bias, smooth, xchunk = 0, ychunk = 0):
 	testPerl = perl.noiseFactory()
 
 	img = Image.new("HSV", (scale,scale), "white")
@@ -31,7 +31,7 @@ def prodImg(scale=16, file="swag.png", seed=123, octaves=3, bias=0.8, smooth = 2
 	values = testPerl.list
 
 	minVal = min(values)
-	tempList = [x minVal for x in values]
+	tempList = [x - minVal for x in values]
 
 	maxVal = max(tempList)
 	values = [x / maxVal * 100 for x in tempList]
