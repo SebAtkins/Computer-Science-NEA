@@ -19,13 +19,13 @@ def getVal(x, y, file):
 
 	return v / 10
 
-def prodImg(scale, file, seed, octaves, bias, smooth, xchunk = 0, ychunk = 0):
+def prodImg(xScale, yScale, file, seed, octaves, bias, smooth, xchunk = 0, ychunk = 0):
 	noiseGenerator = noiseFactory()
 
-	img = Image.new("HSV", (scale,scale), "white")
+	img = Image.new("HSV", (xScale,yScale), "white")
 	draw = ImageDraw.Draw(img)
 
-	noiseGenerator.makeOctaveList(scale, scale, seed, smooth, octaves, bias, xchunk, ychunk) 
+	noiseGenerator.makeOctaveList(xScale, yScale, seed, smooth, octaves, bias, xchunk, ychunk) 
 
 	values = noiseGenerator.list
 
@@ -35,9 +35,11 @@ def prodImg(scale, file, seed, octaves, bias, smooth, xchunk = 0, ychunk = 0):
 	maxVal = max(tempList)
 	values = [x / maxVal * 100 for x in tempList]
 
-	for x in range (scale):
-		for y in range(scale):
-			draw.rectangle([x,y,x+1,y+1], fill = (0,0, int(values[y * scale + x])))
+	for x in range (xScale):
+		for y in range(yScale):
+			draw.rectangle([x,y,x+1,y+1], fill = (0,0, int(values[y * xScale + x])))
 
 	rgbImg = img.convert(mode="RGB")
 	rgbImg.save(file)
+
+prodImg(160, 100, "Final/swag.png", 12345, 4, 0.67, 25)
