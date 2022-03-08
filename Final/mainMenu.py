@@ -109,7 +109,7 @@ class genHmapMenu:
             output = tk.filedialog.asksaveasfilename()
 
             try:
-                prodImg(xSize, ySize, output, seed, smoothing, bias, 25)
+                prodImg(xSize, ySize, output + ".png", seed, smoothing, bias, 25)
                 showImg(output)
             except:
                 messagebox.showerror(title="Error", 
@@ -276,7 +276,7 @@ class genTerrainMenu:
 
             try:
                 prodImg(xSize, ySize, "temp.png", seed, smoothing, bias, 25)
-                runGen(xSize, ySize, output, "temp.png", genNormals)
+                runGen(xSize, ySize, output + ".obj", "temp.png", genNormals)
                 show(output)
             except:
                 messagebox.showerror(title="Error", 
@@ -455,7 +455,7 @@ class ldHmapMenu:
             output = tk.filedialog.asksaveasfilename()
 
             try:
-                runGen(xSize, ySize, output, image + ".png", genNormals)
+                runGen(xSize, ySize, output + ".obj", image + ".png", genNormals)
                 show(output)
             except:
                 messagebox.showerror(title="Error", 
